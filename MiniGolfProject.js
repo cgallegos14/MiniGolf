@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", init);
 var canvasTag;
 var canvasOffSetX;
 var canvasOffSetY;
-var powerBarWidthChange = 1;
+var powerBarWidthChange = 2;
 var s = 0;
 var e = 0;
 
@@ -92,7 +92,7 @@ function keyboardAction(event){
     console.log("button clicked => " + event.keyCode);
     //Interacting with the powerbar, decreasing the bar by set amount if left arrow key is pushed
     if(event.keyCode == 37){
-        if(powerBarWidthChange <= 0){
+        if(powerBarWidthChange <= 2){
             alert("Ball won't have force, can't decrease");
         }
         else{
