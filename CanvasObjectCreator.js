@@ -21,11 +21,14 @@ function CanvasObjectCreator(){
         
     }
     
-    this.createSquare = function(x,y,width,widthChange,height,color,borderWidth,bColor){
+    this.createSquare = function(x,y,width,widthChange,height,heightChange,color,borderWidth,bColor){
         context.beginPath();
         
-        var squareWidth = width - widthChange;
-        context.rect(x,y,squareWidth,height);
+        this.squareX = canvasTag.width * x;
+        this.squareY = canvasTag.height * y;
+        this.squareWidth = (canvasTag.width * width) - widthChange;
+        this.squareHeight = (canvasTag.height * height) - heightChange;
+        context.rect(this.squareX,this.squareY,this.squareWidth,this.squareHeight);
         context.fillStyle = color;
         context.fill();
         
@@ -36,20 +39,3 @@ function CanvasObjectCreator(){
         context.closePath();
     }
 }
-
-context.beginPath();
-    
-    var golfBallPositionX = canvasTag.width * .50;
-    golfBallPositionY = canvasTag.height * .94 - moveSpeed;
-    var golfBallRadius = 10;
-    var golfBallStartAngle = 1.0 * Math.PI;
-    var golfBallEndAngle = 3.0 * Math.PI;
-    var golfHoleCounterClockwise = false;
-    
-    context.arc(golfBallPositionX, golfBallPositionY, golfBallRadius, golfBallStartAngle, golfBallEndAngle, golfHoleCounterClockwise);
-    context.fillStyle = "blue";
-    context.fill();
-    
-    context.lineWidth = 2;
-    context.strokeStyle = "#0080FF";
-    context.stroke();

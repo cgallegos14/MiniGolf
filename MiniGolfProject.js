@@ -30,10 +30,17 @@ function init(){
 
 function start(){
     var makeObject = new CanvasObjectCreator();
-    // (x,verticalSpeed,y,horizontalSpeed,radius,start,end,counter,color,lwidth,lcolor)
+    //(x,verticalSpeed,y,horizontalSpeed,radius,start,end,counter,color,lwidth,lcolor)
     makeObject.createCircle(.50,0,.50,0,10,1.0,3.0,false,"white",2,"red"); 
-    // (x,y,width,widthChange,height,color,borderWidth,bColor)
-    makeObject.createSquare(100,100,50,0,50,"yellow",3,"pink"); 
+    
+    createPowerBar();
+}
+
+function createPowerBar(){
+    var makeObject = new CanvasObjectCreator();
+    
+    //(x,y,width,widthChange,height,heightChange,color,borderWidth,bColor)
+    makeObject.createSquare(.005,.96,.08,0,.03,0,"yellow",3,"pink"); 
 }
 
 
