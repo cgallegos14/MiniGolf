@@ -20,4 +20,19 @@ function CanvasObjectCreator(){
         context.stroke();
         
     }
+    
+    this.createSquare = function(x,y,width,widthChange,height,color,borderWidth,bColor){
+        context.beginPath();
+        
+        var squareWidth = width - widthChange;
+        context.rect(x,y,squareWidth,height);
+        context.fillStyle = color;
+        context.fill();
+        
+        context.lineWidth = borderWidth;
+        context.strokeStyle = bColor;
+        context.stroke();
+        
+        context.closePath();
+    }
 }
