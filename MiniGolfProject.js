@@ -3,6 +3,8 @@ var canvasTag;
 var canvasOffSetX;
 var canvasOffSetY;
 var powerBarWidthChange = 0;
+var s = 0;
+var e = 0;
 
 function init(){
     canvasTag = document.getElementById("mainCanvas");
@@ -29,11 +31,14 @@ function init(){
 
 
 function start(){
-    var makeObject = new CanvasObjectCreator();
-    //(x,verticalSpeed,y,horizontalSpeed,radius,start,end,counter,color,lwidth,lcolor)
-    makeObject.createCircle(.50,0,.50,0,10,1.0,3.0,false,"white",2,"red"); 
-    
+    createGolfBall(0,0);
     createPowerBar(0,0);
+}
+
+function createGolfBall(changeX,changeY){
+    var makeObject = new CanvasObjectCreator();
+    //(x,changeX,y,changeY,radius,start,end,counter,color,lwidth,lcolor)
+    makeObject.createCircle(.5,changeX,.5,changeY,10,1.0,3.0,false,"white",2,"red"); 
 }
 
 function createPowerBar(widthChange,heightChange){
@@ -42,6 +47,19 @@ function createPowerBar(widthChange,heightChange){
     //(x,y,width,widthChange,height,heightChange,color,borderWidth,bColor)
     makeObject.createSquare(.005,.96,.01,widthChange,.03,heightChange,"yellow",3,"pink"); 
 }
+
+function animateGolfBall(timestamp){
+    console.log("i am called");
+    context.clearRect(0, 0, canvasTag.width, canvasTag.height);
+    s++;
+    e++;
+    //context.clearRect(0, 0, canvasTag.width, canvasTag.height);
+    createGolfBall(s * (powerBarWidthChange * .02),e * (powerBarWidthChange * .02));
+    console.log(powerBarWidthChange);
+    //powerStart++;
+    window.requestAnimationFrame(animateGolfBall);
+}
+
 
 
 
@@ -67,13 +85,7 @@ function createPowerBar(widthChange,heightChange){
 
 
 function mouseDownAction(event){
-    x++;
     console.log("Released on point: " + event.x + ", " + event.y); 
-    context.clearRect(0, 0, canvasTag.width, canvasTag.height);
-    
-    var makeObject = new CanvasObjectCreator();
-    makeObject.createCircle(80,x,80,0,10,1.0,3.0,false,"white",2,"red");
-    
 }
 
 function keyboardAction(event){
@@ -85,7 +97,8 @@ function keyboardAction(event){
         }
         else{
             context.clearRect(0, 0, canvasTag.width, canvasTag.height);
-            powerBarWidthChange--;
+            createGolfBall(0,0);
+            powerBarWidthChange -= 2;
             createPowerBar(powerBarWidthChange,0);
             console.log(powerBarWidthChange);
         }
@@ -97,9 +110,14 @@ function keyboardAction(event){
         }
         else{
             context.clearRect(0, 0, canvasTag.width, canvasTag.height);
+            createGolfBall(0,0);
             powerBarWidthChange += 2 ;
             createPowerBar(powerBarWidthChange,0);
             console.log(powerBarWidthChange);
         }
+    }
+    
+    if(event.keyCode == 32){
+        requestAnimationFrame(animateGolfBall);
     }
 }
