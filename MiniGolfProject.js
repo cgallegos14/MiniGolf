@@ -6,8 +6,8 @@ var x  = 0;
 
 function init(){
     canvasTag = document.getElementById("mainCanvas");
-    canvasTag.width = 1000
-    canvasTag.height = 800;
+    canvasTag.width = window.innerWidth * .73;
+    canvasTag.height = window.innerHeight * .73;
     
     //Used to allow the animation tool to work in different browsers. 
     requestAnimationFrame = window.requestAnimationFrame || 
