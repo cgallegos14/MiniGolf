@@ -26,7 +26,7 @@ function CanvasObjectCreator(){
         
         this.squareX = canvasTag.width * x;
         this.squareY = canvasTag.height * y;
-        this.squareWidth = (canvasTag.width * width) - widthChange;
+        this.squareWidth = (canvasTag.width * width) + widthChange;
         this.squareHeight = (canvasTag.height * height) - heightChange;
         context.rect(this.squareX,this.squareY,this.squareWidth,this.squareHeight);
         context.fillStyle = color;

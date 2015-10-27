@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", init);
 var canvasTag;
 var canvasOffSetX;
 var canvasOffSetY;
-var x  = 0;
+var powerBarWidthChange = 0;
 
 function init(){
     canvasTag = document.getElementById("mainCanvas");
@@ -33,14 +33,14 @@ function start(){
     //(x,verticalSpeed,y,horizontalSpeed,radius,start,end,counter,color,lwidth,lcolor)
     makeObject.createCircle(.50,0,.50,0,10,1.0,3.0,false,"white",2,"red"); 
     
-    createPowerBar();
+    createPowerBar(0,0);
 }
 
-function createPowerBar(){
+function createPowerBar(widthChange,heightChange){
     var makeObject = new CanvasObjectCreator();
     
     //(x,y,width,widthChange,height,heightChange,color,borderWidth,bColor)
-    makeObject.createSquare(.005,.96,.08,0,.03,0,"yellow",3,"pink"); 
+    makeObject.createSquare(.005,.96,.01,widthChange,.03,heightChange,"yellow",3,"pink"); 
 }
 
 
@@ -78,4 +78,28 @@ function mouseDownAction(event){
 
 function keyboardAction(event){
     console.log("button clicked => " + event.keyCode);
+    //Interacting with the powerbar, decreasing the bar by set amount if left arrow key is pushed
+    if(event.keyCode == 37){
+        if(powerBarWidthChange < 0){
+            alert("Ball won't have force, can't decrease");
+        }
+        else{
+            context.clearRect(0, 0, canvasTag.width, canvasTag.height);
+            powerBarWidthChange--;
+            createPowerBar(powerBarWidthChange,0);
+            console.log(powerBarWidthChange);
+        }
+    }
+    //Interacting with the powerbar, increasing the bar by set amount if right arrow key is pushed
+    if(event.keyCode == 39){
+        if(powerBarWidthChange > 300){
+            alert("Ball at max power");
+        }
+        else{
+            context.clearRect(0, 0, canvasTag.width, canvasTag.height);
+            powerBarWidthChange += 2 ;
+            createPowerBar(powerBarWidthChange,0);
+            console.log(powerBarWidthChange);
+        }
+    }
 }
