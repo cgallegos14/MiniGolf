@@ -1,0 +1,109 @@
+html{
+    background-image:url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3hB0eml8Qbe7Q1AQC67cHIdUSzO3MKWZr79O9aArGwNhbg6ee");
+}
+
+canvas{
+    background-color:green;
+}
+
+h1{
+    font-size:75px;
+    color:orange;
+    text-shadow: -5px 0 black, 0 5px blue, 5px 0 black, 0 -5px black;
+    font-family:cursive;
+    text-align:center;
+}
+
+h1#greeting{
+    font-size:110px;
+    color:orange;
+    text-shadow: -5px 0 black, 0 5px blue, 5px 0 black, 0 -5px black;
+    font-family:cursive;
+    text-align:center;
+}
+
+h2{
+    font-size:50px;
+    color:orange;
+    text-shadow: -5px 0 black, 0 5px blue, 5px 0 black, 0 -5px black;
+    font-family:cursive;
+    text-align:center;
+    text-align:left;
+}
+
+ol{
+    font-size:35px;
+    color:orange;
+    font-family:inherit;
+}
+
+ol p{
+    font-size:30px;
+    color:white;
+    font-family:inherit;
+}
+p:first-letter{
+    font-size:35px;
+    color:white;
+    font-family:New Rocker;
+}
+
+button{
+    font-size:40px;
+    font-family:New Rocker;
+    color:red;
+    border-bottom-width:5px;
+    border-bottom-left-radius:5px;
+    border-bottom-color:red;
+    text-align:center;
+    background-color:cyan;
+    margin-left:700px;
+}
+
+
+button:hover{
+    font-size:40px;
+    font-family:New Rocker;
+    color:cyan;
+    border-bottom-width:5px;
+    border-bottom-left-radius:5px;
+    border-bottom-color:cyan;
+    text-align:center;
+    background-color:red;
+}
+
+a{
+    font-size: 60px;
+    font-family:cursive;
+    color:orange;
+}
+
+a#play{
+    font-size: 100px;
+    font-family:New Rocker;
+    color:#00FF00;
+}
+
+a#rules{
+    font-size:100px;
+    font-family:New Rocker;
+    color:#00FF00;
+}
+
+a#play:hover{
+    font-size: 100px;
+    font-family:New Rocker;
+    color:yellow;
+}
+
+a#rules:hover{
+    font-size:100px;
+    font-family:New Rocker;
+    color:yellow;
+}
+
+a:hover{
+    font-size: 60px;
+    font-family:New Rocker;
+    color:red;
+}
