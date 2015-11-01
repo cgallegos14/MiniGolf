@@ -3,8 +3,7 @@ var canvasTag;
 var canvasOffSetX;
 var canvasOffSetY;
 var powerBarWidthChange = 2;
-var s = 0;
-var e = 0;
+var golfBall = {x:0,changeX:0,y:0,changeY:0,angle:35,vertical:0,horizontal:0};  
 
 function init(){
     canvasTag = document.getElementById("mainCanvas");
@@ -26,19 +25,31 @@ function init(){
     console.log(canvasOffSetX);
     console.log(canvasOffSetY);
     
+    golfBall.x = canvasTag.width / 2;
+    golfBall.y = canvasTag.height / 2;
+    
     start();
 }
 
 
 function start(){
-    createGolfBall(0,0);
+    createGolfBall();
     createPowerBar(0,0);
 }
 
-function createGolfBall(changeX,changeY){
+function createGolfBall(){
     var makeObject = new CanvasObjectCreator();
     //(x,changeX,y,changeY,radius,start,end,counter,color,lwidth,lcolor)
-    makeObject.createCircle(.5,changeX,.5,changeY,10,1.0,3.0,false,"white",2,"red"); 
+    makeObject.createCircle(golfBall.x,golfBall.changeX,golfBall.y,golfBall.changeY,10,1.0,3.0,false,"white",2,"red"); 
+}
+
+function updateGolfBall(){
+    var radians = golfBall.angle * Math.PI/ 180;
+    golfBall.changeX = Math.cos(radians) * powerBarWidthChange;
+    golfBall.changeY = Math.sin(radians) * powerBarWidthChange;
+    
+    golfBall.x += golfBall.changeX;
+    golfBall.y += golfBall.changeY;
 }
 
 function createPowerBar(widthChange,heightChange){
@@ -49,22 +60,31 @@ function createPowerBar(widthChange,heightChange){
 }
 
 function animateGolfBall(timestamp){
-    console.log("i am called");
     context.clearRect(0, 0, canvasTag.width, canvasTag.height);
-    s++;
-    e++;
-    //context.clearRect(0, 0, canvasTag.width, canvasTag.height);
-    createGolfBall(s * (powerBarWidthChange * .02),e * (powerBarWidthChange * .02));
-    console.log(powerBarWidthChange);
-    //powerStart++;
+    
+    golfBall.vertical++;
+    golfBall.horizontal++;
+    //golfBall.changeX = golfBall.vertical * (powerBarWidthChange * .02);
+    //golfBall.changeY = golfBall.horizontal * (powerBarWidthChange * .02);
+    
+    updateGolfBall();
+    createGolfBall();
+    
+    
     window.requestAnimationFrame(animateGolfBall);
 }
 
 
 
 
-
-
+/*
+if (ball.x > canvasTag.width - 20 || ball.x < 0 ) {
+     angle = 180 - angle;
+     updateBall();
+} else if (ball.y > canvasTag.height - 20 || ball.y < 0) {
+     angle = 360 - angle;
+     updateBall();
+}*/
 
 
 

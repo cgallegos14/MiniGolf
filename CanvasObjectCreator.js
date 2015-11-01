@@ -7,8 +7,12 @@ function CanvasObjectCreator(){
     
     this.createCircle = function(x,changeX,y,changeY,radius,start,end,counter,color,lwidth,lcolor){
         context.beginPath();
-        this.golfBallPositionX = (canvasTag.width * x) - changeX;
-        this.golfBallPositionY = (canvasTag.height * y) - changeY;
+        //this.golfBallPositionX = (canvasTag.width * x) - changeX;
+        //this.golfBallPositionY = (canvasTag.height * y) - changeY;
+        
+        this.golfBallPositionX = x;
+        this.golfBallPositionY = y;
+        
         this.circleStartAngle = 1.0 * Math.PI;
         this.circleEndAngle = 3.0 * Math.PI;        
         context.arc(this.golfBallPositionX,this.golfBallPositionY,radius,this.circleStartAngle,this.circleEndAngle,counter);
