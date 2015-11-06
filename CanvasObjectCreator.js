@@ -42,4 +42,5 @@ function CanvasObjectCreator(){
         
         context.closePath();
     }
+    
 }
