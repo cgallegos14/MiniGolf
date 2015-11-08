@@ -3,7 +3,7 @@ var canvasTag;
 var canvasOffSetX;
 var canvasOffSetY;
 var powerBarWidthChange = 2;
-var powerBar = {widthChange:2,heightChange:0}
+var powerBar = {widthChange:2,heightChange:0,distance:0}
 var golfBall = {x:0,changeX:0,y:0,changeY:0,angle:0,vertical:0,horizontal:0,degree:0};  //90 is down, 180 is left, 270 is up, 
 var arrowImageObject;
 
@@ -88,25 +88,28 @@ function createPowerBar(){
 }
 
 function animateGolfBall(timestamp){
-    context.clearRect(0, 0, canvasTag.width, canvasTag.height);    
-    
-    if (golfBall.x > canvasTag.width - 5 || golfBall.x < 5 ) {
-        golfBall.angle = 180 - golfBall.angle;
-        updateGolfBall();
-        createGolfBall();
-    } 
-    
-    else if (golfBall.y > canvasTag.height - 5 || golfBall.y < 5) {
-        golfBall.angle = 360 - golfBall.angle;
-        updateGolfBall();
-        createGolfBall();
+    if(powerBar.widthChange != 0){
+        context.clearRect(0, 0, canvasTag.width, canvasTag.height);    
+
+        if (golfBall.x > canvasTag.width - 5 || golfBall.x < 5 ) {
+            golfBall.angle = 180 - golfBall.angle;
+            updateGolfBall();
+            createGolfBall();
+        } 
+
+        else if (golfBall.y > canvasTag.height - 5 || golfBall.y < 5) {
+            golfBall.angle = 360 - golfBall.angle;
+            updateGolfBall();
+            createGolfBall();
+        }
+        else{
+             updateGolfBall();
+             createGolfBall();
+        }
+
+        window.requestAnimationFrame(animateGolfBall);
+        powerBar.widthChange -= 1;
     }
-    else{
-         updateGolfBall();
-         createGolfBall();
-    }
-    
-    window.requestAnimationFrame(animateGolfBall);
 }
 
 
@@ -202,5 +205,6 @@ function keyboardAction(event){
     
     if(event.keyCode == 32){
         requestAnimationFrame(animateGolfBall);
+        powerBar.distance = powerBar.widthChange;
     }
 }
