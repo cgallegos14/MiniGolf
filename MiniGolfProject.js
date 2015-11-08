@@ -2,9 +2,9 @@ document.addEventListener("DOMContentLoaded", init);
 var canvasTag;
 var canvasOffSetX;
 var canvasOffSetY;
-var powerBarWidthChange = 2;
+var obsticles = [];
 var powerBar = {widthChange:2,heightChange:0,distance:0}
-var golfBall = {x:0,changeX:0,y:0,changeY:0,angle:0,vertical:0,horizontal:0,degree:0};  //90 is down, 180 is left, 270 is up, 
+var golfBall = {x:0,changeX:0,y:0,changeY:0,angle:0,vertical:0,horizontal:0,degree:0,isMoving:false};  //90 is down, 180 is left, 270 is up, 
 var arrowImageObject;
 
 function init(){
@@ -32,18 +32,30 @@ function init(){
         
     start();
     
-    console.log(3.0 * Math.PI + 1.0 * Math.PI);
 }
 
 
 function start(){
     createGolfBall();
-    createPowerBar(0,0);
+    createPowerBar();
     setupArrowImage();
+    createObstacle();
+}
+
+function createObstacle(){
+    var object1 = new CanvasObjectCreator();
+    var object2 = new CanvasObjectCreator();
+    
+    object1.createSquare(.6,.4,.02,0,.2,0,"pink",3,"yellow"); 
+    object2.createSquare(.4,.4,.02,0,.2,0,"pink",3,"yellow"); 
+    
+    obsticles = [object1,object2];
 }
 
 function drawEverything(){
     createGolfBall();
+    createPowerBar();
+    drawObstacle();
 }
 
 function setupArrowImage(){
@@ -94,27 +106,41 @@ function animateGolfBall(timestamp){
         if (golfBall.x > canvasTag.width - 5 || golfBall.x < 5 ) {
             golfBall.angle = 180 - golfBall.angle;
             updateGolfBall();
-            createGolfBall();
+            drawEverything();
         } 
 
         else if (golfBall.y > canvasTag.height - 5 || golfBall.y < 5) {
             golfBall.angle = 360 - golfBall.angle;
             updateGolfBall();
-            createGolfBall();
+            drawEverything();
         }
         else{
              updateGolfBall();
-             createGolfBall();
+             drawEverything();
         }
 
         window.requestAnimationFrame(animateGolfBall);
         powerBar.widthChange -= 1;
     }
+    else{
+        golfBall.isMoving = false;
+        drawEverything();
+    }
 }
 
 
 
-
+function drawObstacle(){  
+    for(var i = 0; i < obsticles.length; i++){
+        obsticles[i].createSquare(obsticles[i].squareX/canvasTag.width,
+                                  obsticles[i].squareY/canvasTag.height,
+                                  obsticles[i].squareWidth/canvasTag.width,
+                                  0,
+                                  obsticles[i].squareHeight/canvasTag.height,
+                                  0,"pink",3,"yellow"); 
+    }
+    
+}
 
 
 
@@ -134,77 +160,78 @@ function mouseDownAction(event){
 }
 
 function keyboardAction(event){
-    console.log("button clicked => " + event.keyCode);
-    //Interacting with the powerbar, decreasing the bar by set amount if left arrow key is pushed
-    if(event.keyCode == 37){
-        if(powerBar.widthChange <= 2){
-            alert("Ball won't have force, can't decrease");
+    if(golfBall.isMoving == false){
+        console.log("button clicked => " + event.keyCode);
+        //Interacting with the powerbar, decreasing the bar by set amount if left arrow key is pushed
+        if(event.keyCode == 37){
+            if(powerBar.widthChange <= 2){
+                alert("Ball won't have force, can't decrease");
+            }
+            else{
+                context.clearRect(0, 0, canvasTag.width, canvasTag.height);
+                powerBar.widthChange -= 2;
+                drawEverything();
+                console.log(powerBar.widthChange);
+            }
         }
-        else{
-            context.clearRect(0, 0, canvasTag.width, canvasTag.height);
-            createGolfBall();
-            powerBar.widthChange -= 2;
-            createPowerBar();
-            console.log(powerBar.widthChange);
+        //Interacting with the powerbar, increasing the bar by set amount if right arrow key is pushed
+        if(event.keyCode == 39){
+            if(powerBar.widthChange > 300){
+                alert("Ball at max power");
+            }
+            else{
+                context.clearRect(0, 0, canvasTag.width, canvasTag.height);
+                powerBar.widthChange += 2 ;
+                drawEverything();
+                console.log(powerBar.widthChange);
+            }
         }
-    }
-    //Interacting with the powerbar, increasing the bar by set amount if right arrow key is pushed
-    if(event.keyCode == 39){
-        if(powerBar.widthChange > 300){
-            alert("Ball at max power");
+
+        if(event.keyCode == 38){
+            context.clearRect(0, 0, canvasTag.width, canvasTag.height);  
+            golfBall.degree += 0.0174533; 
+
+            var width = arrowImageObject.naturalWidth/20;
+            var height = arrowImageObject.naturalHeight/20;
+            var x = canvasTag.width * .975;
+            var y = canvasTag.height * .975;
+            context.translate(x, y);
+            context.rotate(golfBall.degree);
+            context.clearRect(0, 0, canvasTag.width, canvasTag.height); 
+            context.drawImage(arrowImageObject, -width / 2, -height / 2, width, height);
+            context.rotate(-golfBall.degree);
+            context.translate(-x, -y);
+
+            console.log(Math.abs(Math.floor((golfBall.degree * (180/Math.PI) % 360))));
+            golfBall.angle = Math.abs(Math.floor((golfBall.degree * (180/Math.PI) % 360)));
+            drawEverything();
         }
-        else{
-            context.clearRect(0, 0, canvasTag.width, canvasTag.height);
-            createGolfBall();
-            powerBar.widthChange += 2 ;
-            createPowerBar();
-            console.log(powerBarWidthChange);
+        /*
+        if(event.keyCode == 40){
+            context.clearRect(0, 0, canvasTag.width, canvasTag.height);  
+            golfBall.degree -= 0.0174533; 
+
+            var width = arrowImageObject.naturalWidth/20;
+            var height = arrowImageObject.naturalHeight/20;
+            var x = canvasTag.width * .975;
+            var y = canvasTag.height * .975;
+            context.translate(x, y);
+            context.rotate(golfBall.degree);
+            context.clearRect(0, 0, canvasTag.width, canvasTag.height); 
+            context.drawImage(arrowImageObject, -width / 2, -height / 2, width, height);
+            context.rotate(-golfBall.degree);
+            context.translate(-x, -y);
+
+            //console.log(Math.abs(Math.floor((golfBall.degree * (180/Math.PI) % 360))));
+            golfBall.angle = (Math.abs(Math.floor((golfBall.degree * (180/Math.PI)))) * 3) % 360;
+            console.log(golfBall.angle);
+            drawEverything();
+        }*/
+
+        if(event.keyCode == 32){
+            requestAnimationFrame(animateGolfBall);
+            powerBar.distance = powerBar.widthChange;
+            golfBall.isMoving = true;
         }
-    }
-    
-    if(event.keyCode == 38){
-        context.clearRect(0, 0, canvasTag.width, canvasTag.height);  
-        golfBall.degree += 0.0174533; 
-        
-        var width = arrowImageObject.naturalWidth/20;
-        var height = arrowImageObject.naturalHeight/20;
-        var x = canvasTag.width * .975;
-        var y = canvasTag.height * .975;
-        context.translate(x, y);
-        context.rotate(golfBall.degree);
-        context.clearRect(0, 0, canvasTag.width, canvasTag.height); 
-        context.drawImage(arrowImageObject, -width / 2, -height / 2, width, height);
-        context.rotate(-golfBall.degree);
-        context.translate(-x, -y);
-        
-        console.log(Math.abs(Math.floor((golfBall.degree * (180/Math.PI) % 360))));
-        golfBall.angle = Math.abs(Math.floor((golfBall.degree * (180/Math.PI) % 360)));
-        drawEverything();
-    }
-    /*
-    if(event.keyCode == 40){
-        context.clearRect(0, 0, canvasTag.width, canvasTag.height);  
-        golfBall.degree -= 0.0174533; 
-        
-        var width = arrowImageObject.naturalWidth/20;
-        var height = arrowImageObject.naturalHeight/20;
-        var x = canvasTag.width * .975;
-        var y = canvasTag.height * .975;
-        context.translate(x, y);
-        context.rotate(golfBall.degree);
-        context.clearRect(0, 0, canvasTag.width, canvasTag.height); 
-        context.drawImage(arrowImageObject, -width / 2, -height / 2, width, height);
-        context.rotate(-golfBall.degree);
-        context.translate(-x, -y);
-        
-        //console.log(Math.abs(Math.floor((golfBall.degree * (180/Math.PI) % 360))));
-        golfBall.angle = (Math.abs(Math.floor((golfBall.degree * (180/Math.PI)))) * 3) % 360;
-        console.log(golfBall.angle);
-        drawEverything();
-    }*/
-    
-    if(event.keyCode == 32){
-        requestAnimationFrame(animateGolfBall);
-        powerBar.distance = powerBar.widthChange;
     }
 }
