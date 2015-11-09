@@ -129,7 +129,6 @@ function animateGolfBall(timestamp){
 }
 
 
-
 function drawObstacle(){  
     for(var i = 0; i < obsticles.length; i++){
         obsticles[i].createSquare(obsticles[i].squareX/canvasTag.width,
@@ -138,7 +137,33 @@ function drawObstacle(){
                                   0,
                                   obsticles[i].squareHeight/canvasTag.height,
                                   0,"pink",3,"yellow"); 
+        
+       
+       if (golfBall.x < obsticles[i].squareX + obsticles[i].squareWidth &&
+           golfBall.x + 20 > obsticles[i].squareX &&
+           golfBall.y < obsticles[i].squareY + obsticles[i].squareHeight &&
+           20 + golfBall.y > obsticles[i].squareY) {
+                golfBall.angle = 180 - golfBall.angle;
+                console.log("hit!");
+       }
+        
+        
+        /* 
+        if (golfBall.x < obsticles[i].squareX + obsticles[i].squareWidth &&
+           golfBall.x + 20 > obsticles[i].squareX){
+            golfBall.angle = 180 - golfBall.angle;
+            console.log("hit! X");
+        }
+            
+        if (golfBall.y < obsticles[i].squareY + obsticles[i].squareHeight &&
+           20 + golfBall.y > obsticles[i].squareY) {
+                golfBall.angle = 360 - golfBall.angle;
+                console.log("hit! Y");
+       }*/
+            
     }
+        
+        
     
 }
 
@@ -160,6 +185,7 @@ function mouseDownAction(event){
 }
 
 function keyboardAction(event){
+    var direction = Math.floor((Math.random() * 4) + 1);
     if(golfBall.isMoving == false){
         console.log("button clicked => " + event.keyCode);
         //Interacting with the powerbar, decreasing the bar by set amount if left arrow key is pushed
@@ -206,10 +232,24 @@ function keyboardAction(event){
             golfBall.angle = Math.abs(Math.floor((golfBall.degree * (180/Math.PI) % 360)));
             drawEverything();
         }
-        /*
+        
         if(event.keyCode == 40){
+            switch(direction){
+                case 1:
+                    direction = 0;
+                    break;
+                case 2:
+                    direction = 1.5708;
+                    break;
+                case 3:
+                    direction = 3.14159;
+                    break;
+                case 4:
+                    direction = 4.71239;
+                    break;
+            }
             context.clearRect(0, 0, canvasTag.width, canvasTag.height);  
-            golfBall.degree -= 0.0174533; 
+            golfBall.degree = direction; 
 
             var width = arrowImageObject.naturalWidth/20;
             var height = arrowImageObject.naturalHeight/20;
@@ -223,10 +263,10 @@ function keyboardAction(event){
             context.translate(-x, -y);
 
             //console.log(Math.abs(Math.floor((golfBall.degree * (180/Math.PI) % 360))));
-            golfBall.angle = (Math.abs(Math.floor((golfBall.degree * (180/Math.PI)))) * 3) % 360;
+            golfBall.angle = (Math.abs(Math.floor((golfBall.degree * (180/Math.PI)))) ) % 360;
             console.log(golfBall.angle);
             drawEverything();
-        }*/
+        }
 
         if(event.keyCode == 32){
             requestAnimationFrame(animateGolfBall);
