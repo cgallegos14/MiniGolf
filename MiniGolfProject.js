@@ -36,20 +36,25 @@ function init(){
 
 
 function start(){
-    createGolfBall();
     createPowerBar();
     setupArrowImage();
     createObstacle();
+    createGolfBall();
 }
 
 function createObstacle(){
     var object1 = new CanvasObjectCreator();
     var object2 = new CanvasObjectCreator();
+    var object3 = new CanvasObjectCreator();
+    var object4 = new CanvasObjectCreator();
     
     object1.createSquare(.6,.4,.02,0,.2,0,"pink",3,"yellow"); 
     object2.createSquare(.4,.4,.02,0,.2,0,"pink",3,"yellow"); 
     
-    obsticles = [object1,object2];
+    object3.createCircle(canvasTag.width * .5,0,canvasTag.height * .7,0,30,1.0,3.0,false,"blue",2,"cyan");
+    object4.createCircle(canvasTag.width * .5,0,canvasTag.height * .3,0,30,1.0,3.0,false,"orange",2,"yellow")
+    
+    obsticles = [object1,object2,object3,object4];
 }
 
 function drawEverything(){
@@ -80,7 +85,7 @@ function imageArrowLoaded(){
 function createGolfBall(){
     var makeObject = new CanvasObjectCreator();
     //(x,changeX,y,changeY,radius,start,end,counter,color,lwidth,lcolor)
-    makeObject.createCircle(golfBall.x,golfBall.changeX,golfBall.y,golfBall.changeY,10,1.0,3.0,false,"white",2,"red"); 
+    makeObject.createCircle(golfBall.x,golfBall.changeX,golfBall.y,golfBall.changeY,10,1.0,3.0,false,"white",2,"black"); 
 }
 
 function updateGolfBall(){
@@ -131,35 +136,49 @@ function animateGolfBall(timestamp){
 
 function drawObstacle(){  
     for(var i = 0; i < obsticles.length; i++){
-        obsticles[i].createSquare(obsticles[i].squareX/canvasTag.width,
-                                  obsticles[i].squareY/canvasTag.height,
-                                  obsticles[i].squareWidth/canvasTag.width,
-                                  0,
-                                  obsticles[i].squareHeight/canvasTag.height,
-                                  0,"pink",3,"yellow"); 
         
-       
-       if (golfBall.x < obsticles[i].squareX + obsticles[i].squareWidth &&
-           golfBall.x + 20 > obsticles[i].squareX &&
-           golfBall.y < obsticles[i].squareY + obsticles[i].squareHeight &&
-           20 + golfBall.y > obsticles[i].squareY) {
-                golfBall.angle = 180 - golfBall.angle;
-                console.log("hit!");
-       }
+        if(obsticles[i].isSquare == true){
         
-        
-        /* 
-        if (golfBall.x < obsticles[i].squareX + obsticles[i].squareWidth &&
-           golfBall.x + 20 > obsticles[i].squareX){
-            golfBall.angle = 180 - golfBall.angle;
-            console.log("hit! X");
+            obsticles[i].createSquare(obsticles[i].squareX/canvasTag.width,
+                                      obsticles[i].squareY/canvasTag.height,
+                                      obsticles[i].squareWidth/canvasTag.width,
+                                      0,
+                                      obsticles[i].squareHeight/canvasTag.height,
+                                      0,"pink",3,"yellow"); 
+
+            if (golfBall.x < obsticles[i].squareX + obsticles[i].squareWidth &&
+                golfBall.x + 20 > obsticles[i].squareX &&
+                golfBall.y < obsticles[i].squareY + obsticles[i].squareHeight &&
+                20 + golfBall.y > obsticles[i].squareY) {
+                     golfBall.angle = 180 - golfBall.angle;
+                     console.log("hit!");
+            }
         }
+        else{
             
-        if (golfBall.y < obsticles[i].squareY + obsticles[i].squareHeight &&
-           20 + golfBall.y > obsticles[i].squareY) {
-                golfBall.angle = 360 - golfBall.angle;
-                console.log("hit! Y");
-       }*/
+            obsticles[i].createCircle(obsticles[i].golfBallPositionX,0,
+                                     obsticles[i].golfBallPositionY,0,
+                                     obsticles[i].radius,1.0,3.0,false,obsticles[i].fillColor,2,obsticles[i].borderColor);
+            
+            createGolfBall();
+            
+            var dx = golfBall.x - obsticles[i].golfBallPositionX;
+            var dy = golfBall.y - obsticles[i].golfBallPositionY;
+            var distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 10 + 30) {
+                if(powerBar.widthChange > 10 && golfBall.isMoving == true && obsticles[i].fillColor == "orange"){
+                    powerBar.widthChange -= 10;
+                }
+                if(golfBall.isMoving == true && obsticles[i].fillColor == "blue"){
+                    golfBall.x = canvasTag.width/6;
+                    golfBall.y = canvasTag.height/6;
+                    golfBall.isMoving = false;
+                    powerBar.widthChange = 2;
+                    drawEverything();
+                }
+            }
+        }
             
     }
         

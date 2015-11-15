@@ -10,13 +10,17 @@ function CanvasObjectCreator(){
         //this.golfBallPositionX = (canvasTag.width * x) - changeX;
         //this.golfBallPositionY = (canvasTag.height * y) - changeY;
         
+        this.isCircle = true;
         this.golfBallPositionX = x;
         this.golfBallPositionY = y;
+        this.radius = radius;
+        this.fillColor = color;
+        this.borderColor = lcolor;
         
         this.circleStartAngle = 1.0 * Math.PI;
         this.circleEndAngle = 3.0 * Math.PI;        
         context.arc(this.golfBallPositionX,this.golfBallPositionY,radius,this.circleStartAngle,this.circleEndAngle,counter);
-        context.fillStyle = "blue";
+        context.fillStyle = color;
         context.fill();
         
         context.lineWidth = lwidth;
@@ -28,6 +32,7 @@ function CanvasObjectCreator(){
     this.createSquare = function(x,y,width,widthChange,height,heightChange,color,borderWidth,bColor){
         context.beginPath();
         
+        this.isSquare = true;
         this.squareX = canvasTag.width * x;
         this.squareY = canvasTag.height * y;
         this.squareWidth = (canvasTag.width * width) + widthChange;
