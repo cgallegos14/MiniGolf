@@ -3,8 +3,8 @@ var canvasTag;
 var canvasOffSetX;
 var canvasOffSetY;
 var obsticles = [];
-var powerBar = {widthChange:2,heightChange:0,distance:0}
-var golfBall = {x:0,changeX:0,y:0,changeY:0,angle:0,vertical:0,horizontal:0,degree:0,isMoving:false};  //90 is down, 180 is left, 270 is up, 
+var powerBar = {widthChange:2,heightChange:0,distance:0,arrowShift:1}
+var golfBall = {x:0,changeX:0,y:0,changeY:0,angle:0,oldAngle:0,vertical:0,horizontal:0,degree:0,isMoving:false};  //90 is down, 180 is left, 270 is up, 
 var arrowImageObject;
 
 function init(){
@@ -43,69 +43,8 @@ function start(){
 }
 
 function createObstacle(){
-    var object1 = new CanvasObjectCreator();
-    var object2 = new CanvasObjectCreator();
-    var object3 = new CanvasObjectCreator();
-    var object4 = new CanvasObjectCreator();
-    var object5 = new CanvasObjectCreator();
-    var object6 = new CanvasObjectCreator();
-    var object7 = new CanvasObjectCreator();
-    var object8 = new CanvasObjectCreator();
-    var object9 = new CanvasObjectCreator();
-    var object9 = new CanvasObjectCreator();
-    var object10 = new CanvasObjectCreator();
-    var object11 = new CanvasObjectCreator();
-    var object12 = new CanvasObjectCreator();
-    var object13 = new CanvasObjectCreator();
-    var object14 = new CanvasObjectCreator();
-    var object15 = new CanvasObjectCreator();
-    var object16 = new CanvasObjectCreator();
-    var object17 = new CanvasObjectCreator();
-    var object18 = new CanvasObjectCreator();
-    var object19 = new CanvasObjectCreator();
-    var object20 = new CanvasObjectCreator();
-    var object21 = new CanvasObjectCreator();
-    var object22 = new CanvasObjectCreator();
-    var object23 = new CanvasObjectCreator();
-    var object24 = new CanvasObjectCreator();
-    var object25 = new CanvasObjectCreator();
-    var hole = new CanvasObjectCreator();
-    
-    object1.createSquare(.1,.005,.015,0,.4,0,"pink",3,"yellow"); 
-    object2.createSquare(.1,.55,.015,0,.4,0,"pink",3,"yellow"); 
-    object5.createSquare(.35,.005,.015,0,.2,0,"pink",3,"yellow"); 
-    object6.createSquare(.35,.275,.015,0,.05,0,"pink",3,"yellow"); 
-    object7.createSquare(.35,.4,.015,0,.05,0,"pink",3,"yellow"); 
-    object8.createSquare(.1,.91,.15,0,.04,0,"blue",3,"cyan"); 
-    object12.createSquare(.8,.91,.98,0,.04,0,"blue",3,"cyan"); 
-    object9.createSquare(.25,.910,.015,0,.085,0,"pink",3,"yellow"); 
-    object10.createSquare(.35,.6,.015,0,.085,0,"pink",3,"yellow"); 
-    object11.createSquare(.35,.755,.015,0,.14,0,"pink",3,"yellow"); 
-    object14.createSquare(.785,.85,.015,0,.15,0,"pink",3,"yellow"); 
-    object15.createSquare(.55,.005,.015,0,.07,0,"pink",3,"yellow");
-    object16.createSquare(.55,.15,.015,0,.07,0,"pink",3,"yellow"); 
-    object18.createSquare(.35,.90,.26,0,.030,0,"pink",3,"yellow");
-    object19.createSquare(.55,.37,.015,0,.43,0,"pink",3,"yellow"); 
-    object21.createSquare(.785,.1,.015,0,.2,0,"pink",3,"yellow"); 
-    object22.createSquare(.785,.55,.015,0,.18,0,"pink",3,"yellow"); 
-    object23.createSquare(.8,.61,.1,0,.03,0,"pink",3,"yellow"); 
-    object24.createSquare(.958,.61,.04,0,.03,0,"pink",3,"yellow"); 
-    object25.createSquare(.7845,.305,.16,0,.03,0,"pink",3,"yellow"); 
-
-    
-    object3.createCircle(canvasTag.width * .05,0,canvasTag.height * .88,0,canvasTag.width * .04,1.0,3.0,false,"blue",2,"cyan");
-    object4.createCircle(canvasTag.width * .2,0,canvasTag.height * .6,0,canvasTag.width * .05,1.0,3.0,false,"orange",2,"yellow");
-    object13.createCircle(canvasTag.width * .45,0,canvasTag.height * .6,0,canvasTag.width * .05,1.0,3.0,false,"orange",2,"yellow");
-    object17.createCircle(canvasTag.width * .43,0,canvasTag.height * .1,0,canvasTag.width * .04,1.0,3.0,false,"blue",2,"cyan");
-    object20.createCircle(canvasTag.width * .68,0,canvasTag.height * .35,0,canvasTag.width * .05,1.0,3.0,false,"blue",2,"cyan");
-    
-    
-    hole.createCircle(canvasTag.width * .83,0,canvasTag.height * .18,0,canvasTag.width * .02,1.0,3.0,false,"black",2,"white");
-    
-    obsticles = [object1,object2,object3,object4,object5,object6,object7,object8,object9,
-                 object10,object11,object12,object13,object14,object15,object16,object17,
-                 object18,object19,object20,object21,object22,object23,object24,
-                 object25,hole];
+    var course = new CanvasObjectCreator();
+    obsticles = course.Course1();
 }
 
 function drawEverything(){
@@ -180,6 +119,7 @@ function animateGolfBall(timestamp){
     }
     else{
         golfBall.isMoving = false;
+        golfBall.angle = golfBall.oldAngle;
         drawEverything();
     }
 }
@@ -277,7 +217,7 @@ function mouseDownAction(event){
 }
 
 function keyboardAction(event){
-    var direction = Math.floor((Math.random() * 4) + 1);
+    //var direction = Math.floor((Math.random() * 4) + 1);
     if(golfBall.isMoving == false){
         console.log("button clicked => " + event.keyCode);
         //Interacting with the powerbar, decreasing the bar by set amount if left arrow key is pushed
@@ -313,6 +253,8 @@ function keyboardAction(event){
             var height = arrowImageObject.naturalHeight/25;
             var x = canvasTag.width * .975;
             var y = canvasTag.height * .975;
+            //var x = golfBall.x;
+            //var y = golfBall.y;
             context.translate(x, y);
             context.rotate(golfBall.degree);
             context.clearRect(0, 0, canvasTag.width, canvasTag.height); 
@@ -322,22 +264,36 @@ function keyboardAction(event){
 
             console.log(Math.abs(Math.floor((golfBall.degree * (180/Math.PI) % 360))));
             golfBall.angle = Math.abs(Math.floor((golfBall.degree * (180/Math.PI) % 360)));
+            golfBall.oldAngle =  Math.abs(Math.floor((golfBall.degree * (180/Math.PI) % 360)));
             drawEverything();
         }
         
         if(event.keyCode == 40){
-            switch(direction){
+            var direction = powerBar.arrowShift;
+            switch(direction){      
                 case 1:
-                    direction = 0;
-                    break;
+                    direction = .7854;
+                    break;  
                 case 2:
                     direction = 1.5708;
                     break;
                 case 3:
-                    direction = 3.14159;
+                    direction = 2.3562;
                     break;
                 case 4:
+                    direction = 3.14159;
+                    break;
+                case 5:
+                    direction = 3.927;
+                    break;
+                case 6:
                     direction = 4.71239;
+                    break;
+                case 7:
+                    direction = 5.4978;
+                    break;
+                case 8:
+                    direction = 0;
                     break;
             }
             context.clearRect(0, 0, canvasTag.width, canvasTag.height);  
@@ -347,6 +303,8 @@ function keyboardAction(event){
             var height = arrowImageObject.naturalHeight/25;
             var x = canvasTag.width * .975;
             var y = canvasTag.height * .975;
+            //var x = golfBall.x;
+            //xvar y = golfBall.y;
             context.translate(x, y);
             context.rotate(golfBall.degree);
             context.clearRect(0, 0, canvasTag.width, canvasTag.height); 
@@ -356,8 +314,13 @@ function keyboardAction(event){
 
             //console.log(Math.abs(Math.floor((golfBall.degree * (180/Math.PI) % 360))));
             golfBall.angle = (Math.abs(Math.floor((golfBall.degree * (180/Math.PI)))) ) % 360;
+            golfBall.oldAngle =  Math.abs(Math.floor((golfBall.degree * (180/Math.PI) % 360)));
             console.log(golfBall.angle);
             drawEverything();
+            powerBar.arrowShift++;
+            if(powerBar.arrowShift > 8){
+                powerBar.arrowShift = 1;
+            }
         }
 
         if(event.keyCode == 32){
