@@ -4,7 +4,7 @@ var canvasOffSetX;
 var canvasOffSetY;
 var obsticles = [];
 var powerBar = {widthChange:2,heightChange:0,distance:2,arrowShift:1}
-var golfBall = {x:0,changeX:0,y:0,changeY:0,angle:0,oldAngle:0,vertical:0,horizontal:0,degree:0,isMoving:false};  //90 is down, 180 is left, 270 is up, 
+var golfBall = {x:0,changeX:0,y:0,changeY:0,angle:0,oldAngle:0,vertical:0,horizontal:0,degree:0,isMoving:false,hits:0};  //90 is down, 180 is left, 270 is up, 
 var arrowImageObject;
 
 function init(){
@@ -106,6 +106,7 @@ function animateGolfBall(timestamp){
             golfBall.angle = 180 - golfBall.angle;
             updateGolfBall();
             drawEverything();
+            //objectHitSound();
         } 
 
         else if (golfBall.y > canvasTag.height - 8 || golfBall.y < 8) {
@@ -116,7 +117,8 @@ function animateGolfBall(timestamp){
         else{
              updateGolfBall();
              drawEverything();
-        }
+             //objectHitSound();
+        } 
 
         window.requestAnimationFrame(animateGolfBall);
         powerBar.widthChange -= 1;
@@ -149,6 +151,7 @@ function drawObstacle(){
                     20 + golfBall.y > obsticles[i].squareY) {
                          golfBall.angle = 180 - golfBall.angle;
                          console.log("hit!");
+                         //objectHitSound();
                 }
             }
             if(obsticles[i].fillColor == "blue"){
@@ -162,6 +165,7 @@ function drawObstacle(){
                          powerBar.widthChange = 2;
                          powerBar.distance = 2;
                          drawEverything();
+                         waterHitSound();
                 }
             }
         }
@@ -181,6 +185,7 @@ function drawObstacle(){
                 if(powerBar.widthChange > 10 && golfBall.isMoving == true && obsticles[i].fillColor == "orange"){
                     powerBar.widthChange -= 10;
                     powerBar.distance -= 5;
+                    sandHitSound();
                 }
                 if(golfBall.isMoving == true && obsticles[i].fillColor == "blue"){
                     golfBall.x = canvasTag.width / 25;
@@ -189,6 +194,7 @@ function drawObstacle(){
                     powerBar.widthChange = 2;
                     powerBar.distance = 2;
                     drawEverything();
+                    waterHitSound();
                 }
                 
                 if(golfBall.isMoving == true && obsticles[i].fillColor == "black" && powerBar.widthChange < 30){
@@ -338,6 +344,25 @@ function keyboardAction(event){
             requestAnimationFrame(animateGolfBall);
             //powerBar.distance = powerBar.widthChange;
             golfBall.isMoving = true;
+            golfBall.hits++;
+            ballHitSound();
+            document.getElementById("hits").innerHTML = "Hits: " + golfBall.hits;
         }
     }
+}
+
+function ballHitSound(){
+    document.getElementById("ballHit").innerHTML= "<embed src='swingg.mp3' hidden=true autostart=true loop=false>"; 
+}
+
+function sandHitSound(){
+    document.getElementById("sand").innerHTML= "<embed src='sand.mp3' hidden=true autostart=true loop=false>"; 
+}
+
+function waterHitSound(){
+    document.getElementById("water").innerHTML= "<embed src='awww.mp3' hidden=true autostart=true loop=false>"; 
+}
+
+function objectHitSound(){
+    document.getElementById("bounce").innerHTML= "<embed src='bonk.mp3' hidden=true autostart=true loop=false>"; 
 }

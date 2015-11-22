@@ -95,14 +95,14 @@ function CanvasObjectCreator(){
         object14.createSquare(.785,.85,.015,0,.15,0,"pink",3,"yellow"); 
         object15.createSquare(.55,.005,.015,0,.07,0,"pink",3,"yellow");
         object16.createSquare(.55,.15,.015,0,.07,0,"pink",3,"yellow"); 
-        object18.createSquare(.35,.90,.26,0,.030,0,"pink",3,"yellow");
+        object18.createSquare(.35,.90,.26,0,.030,0,"blue",3,"cyan");
         object19.createSquare(.55,.37,.015,0,.43,0,"pink",3,"yellow"); 
         object21.createSquare(.785,.1,.015,0,.2,0,"pink",3,"yellow"); 
-        object22.createSquare(.785,.55,.015,0,.18,0,"pink",3,"yellow"); 
-        object23.createSquare(.8,.61,.1,0,.03,0,"pink",3,"yellow"); 
-        object24.createSquare(.958,.61,.04,0,.03,0,"pink",3,"yellow"); 
-        object25.createSquare(.7845,.305,.16,0,.03,0,"pink",3,"yellow"); 
-        object26.createSquare(.55,.804,.16,0,.03,0,"pink",3,"yellow"); 
+        object22.createSquare(.785,.35,.015,0,.38,0,"pink",3,"yellow"); 
+        //object23.createSquare(.8,.61,.1,0,.03,0,"green",3,"yellow"); 
+        //object24.createSquare(.958,.61,.04,0,.03,0,"green",3,"yellow"); 
+        //object25.createSquare(.7845,.305,.16,0,.03,0,"green",3,"yellow"); 
+        object26.createSquare(.55,.804,.12,0,.03,0,"blue",3,"cyan"); 
 
 
         object3.createCircle(canvasTag.width * .05,0,canvasTag.height * .86,0,canvasTag.width * .04,1.0,3.0,false,"blue",2,"cyan");
@@ -112,14 +112,15 @@ function CanvasObjectCreator(){
         object20.createCircle(canvasTag.width * .68,0,canvasTag.height * .35,0,canvasTag.width * .07,1.0,3.0,false,"blue",2,"cyan");
         object27.createCircle(canvasTag.width * .23,0,canvasTag.height * .14,0,canvasTag.width * .07,1.0,3.0,false,"orange",2,"yellow");
         object28.createCircle(canvasTag.width * .45,0,canvasTag.height * .31,0,canvasTag.width * .03,1.0,3.0,false,"blue",2,"cyan");
+        object23.createCircle(canvasTag.width * .835,0,canvasTag.height * .65,0,canvasTag.width * .030,1.0,3.0,false,"orange",2,"yellow");
+        object24.createCircle(canvasTag.width * .96,0,canvasTag.height * .40,0,canvasTag.width * .030,1.0,3.0,false,"orange",2,"yellow");
 
-
-        hole.createCircle(canvasTag.width * .83,0,canvasTag.height * .18,0,canvasTag.width * .02,1.0,3.0,false,"black",2,"white");
+        hole.createCircle(canvasTag.width * .89,0,canvasTag.height * .18,0,canvasTag.width * .02,1.0,3.0,false,"black",2,"white");
 
         this.courseObjects = [object1,object2,object3,object4,object5,object6,object7,object8,object9,
                      object10,object11,object12,object13,object14,object15,object16,object17,
-                     object18,object19,object20,object21,object22,object23,object24,
-                     object25,object26,object27,object28,hole];
+                     object18,object19,object20,object21,object22, object23, object24,
+                     object26,object27,object28,hole];
         
         return this.courseObjects;
     }
