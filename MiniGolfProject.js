@@ -4,7 +4,7 @@ var canvasOffSetX;
 var canvasOffSetY;
 var obsticles = [];
 var powerBar = {widthChange:2,heightChange:0,distance:2,arrowShift:1}
-var golfBall = {x:0,changeX:0,y:0,changeY:0,angle:0,oldAngle:0,vertical:0,horizontal:0,degree:0,isMoving:false,hits:0};  //90 is down, 180 is left, 270 is up, 
+var golfBall = {x:0,changeX:0,y:0,changeY:0,angle:0,oldAngle:0,vertical:0,horizontal:0,degree:0,isMoving:false,hits:0,old:0};
 var arrowImageObject;
 
 function init(){
@@ -106,7 +106,6 @@ function animateGolfBall(timestamp){
             golfBall.angle = 180 - golfBall.angle;
             updateGolfBall();
             drawEverything();
-            //objectHitSound();
         } 
 
         else if (golfBall.y > canvasTag.height - 8 || golfBall.y < 8) {
@@ -117,7 +116,6 @@ function animateGolfBall(timestamp){
         else{
              updateGolfBall();
              drawEverything();
-             //objectHitSound();
         } 
 
         window.requestAnimationFrame(animateGolfBall);
@@ -198,12 +196,30 @@ function drawObstacle(){
                 }
                 
                 if(golfBall.isMoving == true && obsticles[i].fillColor == "black" && powerBar.widthChange < 30){
-                    golfBall.x = canvasTag.width/6;
-                    golfBall.y = canvasTag.height/6;
+                    golfBall.x = canvasTag.width / 25;
+                    golfBall.y = canvasTag.height / 4;
                     golfBall.isMoving = false;
                     powerBar.widthChange = 2;
                     powerBar.distance = 2;
                     drawEverything();
+                    if(document.getElementById("score").innerHTML[7] == undefined){
+                        document.getElementById("score").innerHTML = "Score: " + golfBall.hits;
+                    }
+                    else if(document.getElementById("score").innerHTML[8] == undefined && document.getElementById("score").innerHTML[7] >= golfBall.hits){
+                        document.getElementById("score").innerHTML = "Score: " + golfBall.hits;
+                    }
+                    else if(document.getElementById("score").innerHTML[7] != undefined && document.getElementById("score").innerHTML[7] >= golfBall.hits){
+                        document.getElementById("score").innerHTML = "Score: " + golfBall.hits;
+                    }
+                    else if(document.getElementById("score").innerHTML[7] != undefined && document.getElementById("score").innerHTML[8] != undefined){
+                        var temp = "" + document.getElementById("score").innerHTML[7] + document.getElementById("score").innerHTML[8] + ""
+                        if(temp + 0 >= golfBall.hits){
+                            document.getElementById("score").innerHTML = "Score: " + golfBall.hits;
+                        }
+                    }
+                    golfBall.hits = 0;
+                    document.getElementById("hits").innerHTML = "Hits: " + golfBall.hits;  
+                    winSound();
                 }
             }
         }
@@ -341,12 +357,25 @@ function keyboardAction(event){
         }
 
         if(event.keyCode == 32){
-            requestAnimationFrame(animateGolfBall);
-            //powerBar.distance = powerBar.widthChange;
-            golfBall.isMoving = true;
-            golfBall.hits++;
-            ballHitSound();
-            document.getElementById("hits").innerHTML = "Hits: " + golfBall.hits;
+            if(golfBall.hits < 14){
+                requestAnimationFrame(animateGolfBall);
+                golfBall.isMoving = true;
+                golfBall.hits++;
+                ballHitSound();
+                document.getElementById("hits").innerHTML = "Hits: " + golfBall.hits;
+            }
+            else{
+                context.clearRect(0, 0, canvasTag.width, canvasTag.height);  
+                golfBall.x = canvasTag.width / 25;
+                golfBall.y = canvasTag.height / 4;
+                golfBall.isMoving = false;
+                powerBar.widthChange = 2;
+                powerBar.distance = 2;
+                golfBall.hits = 0;
+                drawEverything();
+                document.getElementById("hits").innerHTML = "Hits: " + golfBall.hits;
+                loseSound();
+            }
         }
     }
 }
@@ -356,7 +385,7 @@ function ballHitSound(){
 }
 
 function sandHitSound(){
-    document.getElementById("sand").innerHTML= "<embed src='sand.mp3' hidden=true autostart=true loop=false>"; 
+    document.getElementById("sand").innerHTML= "<embed src='gasp.mp3' hidden=true autostart=true loop=false>"; 
 }
 
 function waterHitSound(){
@@ -365,4 +394,12 @@ function waterHitSound(){
 
 function objectHitSound(){
     document.getElementById("bounce").innerHTML= "<embed src='bonk.mp3' hidden=true autostart=true loop=false>"; 
+}
+
+function winSound(){
+    document.getElementById("win").innerHTML= "<embed src='win.mp3' hidden=true autostart=true loop=false>"; 
+}
+
+function loseSound(){
+    document.getElementById("lose").innerHTML= "<embed src='gameover.mp3' hidden=true autostart=true loop=false>"; 
 }
